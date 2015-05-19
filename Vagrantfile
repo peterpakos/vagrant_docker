@@ -3,9 +3,8 @@
 
 Vagrant.configure(2) do |config|
 
-	NUM_NODES = 1
-	HOSTNAME_PREFIX = "docker"
-	IP_ADDR_PREFIX = "192.168.0.1"
+	HOST_NAME = "docker"
+	IP_ADDR = "192.168.0.11"
 
 	config.vm.box = "puppetlabs/centos-6.6-64-puppet"
 	config.vm.synced_folder "../../git/foreman-environments/puppet-common", "/puppet"
@@ -13,23 +12,17 @@ Vagrant.configure(2) do |config|
     v.memory = 2048
     v.cpus = 2
   end
-
-  (1..NUM_NODES.to_i).each do |i|
-    nodeName = HOSTNAME_PREFIX
-    ipAddr = IP_ADDR_PREFIX + "#{i}"
-    config.vm.define nodeName do |node|
-      node.vm.hostname = nodeName
-      node.vm.network "private_network", ip: ipAddr
+  config.vm.define HOST_NAME do |node|
+    node.vm.hostname = HOST_NAME
+    node.vm.network "private_network", ip: IP_ADDR
 
 $script = <<SCRIPT
-for i in {1..#{NUM_NODES}}; do
-  echo "#{IP_ADDR_PREFIX}$i #{HOSTNAME_PREFIX}$i" >> /etc/hosts
-done
+echo "#{IP_ADDR} #{HOST_NAME}" >> /etc/hosts
 groupadd docker
 gpasswd -a vagrant docker
-cp -r /vagrant/files/.ssh /home/vagrant/
-chmod 700 /home/vagrant/.ssh
-chmod 600 /home/vagrant/.ssh/*
+cp /vagrant/files/.ssh/id_rsa* /vagrant/files/.ssh/config /home/vagrant/.ssh/
+chmod 0600 /home/vagrant/.ssh/*
+chown vagrant:vagrant /home/vagrant/.ssh/*
 cp -r /vagrant/files/.ssh /root/
 chmod 700 /root/.ssh
 chmod 600 /root/.ssh/*
@@ -44,13 +37,12 @@ service docker start
 test -f /vagrant/Dockerfile && docker build -t centos:mine /vagrant/
 SCRIPT
 
-      node.vm.provision "shell", inline: $script
-#      node.vm.provision "puppet" do |puppet|
-#        puppet.module_path    = "../../git/foreman-environments/puppet-common"
-#        puppet.manifests_path = "puppet/manifests"
-#        puppet.manifest_file  = "default.pp"
-#        puppet.options        = "--disable_warnings deprecations"
-#      end
-    end
+    node.vm.provision "shell", inline: $script
+#    node.vm.provision "puppet" do |puppet|
+#      puppet.module_path    = "../../git/foreman-environments/puppet-common"
+#      puppet.manifests_path = "puppet/manifests"
+#      puppet.manifest_file  = "default.pp"
+#      puppet.options        = "--disable_warnings deprecations"
+#    end
   end
 end
