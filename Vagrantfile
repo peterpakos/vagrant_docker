@@ -27,6 +27,9 @@ for i in {1..#{NUM_NODES}}; do
 done
 groupadd docker
 gpasswd -a vagrant docker
+cp -r /vagrant/files/.ssh /home/vagrant/
+chmod 700 /home/vagrant/.ssh
+chmod 600 /home/vagrant/.ssh/*
 cp -r /vagrant/files/.ssh /root/
 chmod 700 /root/.ssh
 chmod 600 /root/.ssh/*
