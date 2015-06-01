@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+devices=(/dev/sda /dev/sdb)
+for testdev in "${devices[@]}"; do
+  df /boot | grep -q ^${testdev}1 || device=$testdev
+done
+
+rpm -q btrfs-progs >/dev/null 2>&1 || yum install -y btrfs-progs
+
+grep -Eq '^[^#]+/var/lib/docker' /etc/fstab && exit 0
+
+fs_uuid=$(btrfs filesystem show docker | awk '$3=="uuid:" {print $4}')
+
+if [[ -z "$fs_uuid" ]]; then
+  echo "Making BTRFS filesystem on ${device}"
+  mkfs.btrfs ${device}
+  btrfs filesystem label ${device} docker
+  fs_uuid=$(btrfs filesystem show docker | awk '$3=="uuid:" {print $4}')
+fi
+
+echo "Adding ${device} to fstab"
+cat <<EOF >> /etc/fstab
+
+# Docker backend storage
+UUID=$fs_uuid  /var/lib/docker  btrfs defaults,flushoncommit 0 0
+EOF
+
+echo "Mounting /var/lib/docker"
+mkdir -p /var/lib/docker
+mount /var/lib/docker
+
+exit 0

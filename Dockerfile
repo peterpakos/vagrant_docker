@@ -7,9 +7,8 @@ RUN yum -y update
 
 RUN echo -e 'root:rooted' | chpasswd
 
-RUN mkdir -p /root/.ssh
-RUN echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYKV83n9tnQoVDPKdBydMEoPQWe2Uh1Qot+w6kQ8xqMQJsuaMql4cSEWbtXbeK7EIflw/qXL5r74EEdE5aHlwdXq++wAtfCeXbGt6PNY7L3OGbPjWS5kPlFB+1oBvBU8u+/4g3S3UMmGnyXSzaOMIcOz+eGsI98KTiOgXg1D/E5rKRJQdGal1LarenPjIlkCgHbUoHyDXJj7NT4TI4G2uWcDh1VfoHxvJREzfyv0yIeOtaj7wgvzO36o4JaL9odcvx+6nVd1F7ZwPOyBW+AMmrqmfFrVbCgPG3I+kvGicFu7vuJEPzbmNdHRM462XqcOUG6RGDUW+aFDCz/PhJlIFD custom vagrant key' > /root/.ssh/authorized_keys
-RUN chmod -R 0600 /root/.ssh
+ADD files/.ssh /root/.ssh/
+RUN chmod 0700 /root/.ssh && chmod 0600 /root/.ssh/*
 
 RUN mkdir /var/run/sshd
 RUN sed -i -e '/pam_loginuid\.so/d' /etc/pam.d/sshd
