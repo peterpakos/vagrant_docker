@@ -1,6 +1,0 @@
-[submodule "dupa"]
-	path = dupa
-	url = ssh://peter@git.pakos.uk:29418/dockermaster.git
-[submodule "dockermaster"]
-	path = dockermaster
-	url = ssh://peter@git.pakos.uk:29418/dockermaster.git
