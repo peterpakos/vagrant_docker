@@ -12,6 +12,7 @@ RUN chmod 0700 /root/.ssh && chmod 0600 /root/.ssh/*
 
 RUN mkdir /var/run/sshd
 RUN sed -i -e '/pam_loginuid\.so/d' /etc/pam.d/sshd
+RUN sed -i 's/#AddressFamily any/AddressFamily inet/' /etc/ssh/sshd_config
 RUN sed -i 's/.*requiretty$/Defaults !requiretty/' /etc/sudoers
 RUN rm -f /etc/init/tty.conf /etc/init/start-ttys.conf
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime

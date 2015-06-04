@@ -8,9 +8,9 @@ SDB_FILE = "sdb.vdi"
 SDB_SIZE = 80 * 1024
 CORES = 4
 RAM = 8192
-PUPPET_MODULE_PATH = "../../git/foreman-environments/puppet-common"
-PUPPET_MANIFESTS_PATH = "puppet/manifests"
-PUPPET_MANIFEST_FILE = "site.pp"
+#PUPPET_MODULE_PATH = "../../git/foreman-environments/puppet-common"
+#PUPPET_MANIFESTS_PATH = "puppet/manifests"
+#PUPPET_MANIFEST_FILE = "site.pp"
 
 Vagrant.configure(2) do |config|
 
