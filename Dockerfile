@@ -1,7 +1,7 @@
 FROM centos:6
 MAINTAINER Peter Pakos
 
-RUN yum -y install http://www.mirrorservice.org/sites/dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+RUN yum -y install https://anorien.csc.warwick.ac.uk/mirrors/epel/6/i386/epel-release-6-8.noarch.rpm
 RUN yum -y install bash-completion openssh-clients openssh-server rsyslog vim sudo rsync htop nmap
 RUN yum -y update
 
