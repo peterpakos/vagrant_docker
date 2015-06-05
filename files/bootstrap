@@ -1,30 +1,41 @@
 #!/bin/bash
 
-groupadd docker && usermod -aG docker vagrant
+# Set system limits
+cp /vagrant/files/90-nproc.conf /etc/security/limits.d/
 
-cp -r /vagrant/files/.ssh ~vagrant/
-chown -R vagrant:vagrant ~vagrant/.ssh
-chmod 700 ~vagrant/.ssh && chmod 600 ~vagrant/.ssh/*
-ln -s /vagrant/files/dockermaster /usr/local/bin/dockermaster
-
+# Disable unwanted services
 for i in rpcbind nfslock iptables ip6tables; do
   service $i stop; chkconfig $i off
 done
 
-yum -y install http://epel.check-update.co.uk/6/i386/epel-release-6-8.noarch.rpm
-yum -y update
-yum -y install htop nmap bash-completion
+# Passwordless SSH setup
+cp -r /vagrant/files/.ssh ~vagrant/
+chown -R vagrant:vagrant ~vagrant/.ssh
+chmod 700 ~vagrant/.ssh && chmod 600 ~vagrant/.ssh/*
+
+# Update packages and remove/install some additional ones
 yum -y remove postfix
+yum -y update
+yum -y install http://epel.check-update.co.uk/6/i386/epel-release-6-8.noarch.rpm
+yum -y install htop bash-completion git vim
+
+# Privoxy setup
+yum -y install privoxy
+sed -i 's/listen-address.*127.0.0.1:8118/listen-address :8118/' /etc/privoxy/config
+service privoxy start
+
+# Latest docker setup
+groupadd docker && usermod -aG docker vagrant
 yum -y install --enablerepo=epel-testing docker-io
-
 sed -i 's/other_args=/other_args="-s btrfs"/' /etc/sysconfig/docker
-cp /vagrant/files/90-nproc.conf /etc/security/limits.d/
-
-cd /vagrant/files
-wget -N -nv https://get.docker.com/builds/Linux/x86_64/docker-latest
+wget -N -nv -P /vagrant/files \
+  https://get.docker.com/builds/Linux/x86_64/docker-latest
 cp /vagrant/files/docker-latest /usr/bin/docker
 chmod +x /usr/bin/docker
-
 chkconfig docker on && service docker start
-
 docker build -t peterpakos/centos /vagrant/
+
+# Latest dockermaster setup
+git clone https://github.com/peterpakos/dockermaster.git \
+  /opt/dockermaster
+ln -s /opt/dockermaster/dockermaster /usr/local/bin/dockermaster

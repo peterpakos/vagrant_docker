@@ -1,16 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX = "puppetlabs/centos-6.6-64-puppet"
+BOX = "puppetlabs/centos-6.6-64-nocm"
 IP = "192.168.33.100"
 HOSTNAME = "docker"
 SDB_FILE = "sdb.vdi"
 SDB_SIZE = 80 * 1024
 CORES = 4
 RAM = 8192
-#PUPPET_MODULE_PATH = "../../git/foreman-environments/puppet-common"
-#PUPPET_MANIFESTS_PATH = "puppet/manifests"
-#PUPPET_MANIFEST_FILE = "site.pp"
 
 Vagrant.configure(2) do |config|
 
@@ -32,16 +29,5 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "files/configure-btrfs"
   config.vm.provision "shell", path: "files/bootstrap"
-
-#  config.vm.provision "puppet" do |puppet|
-#    puppet.manifests_path = PUPPET_MANIFESTS_PATH
-#    puppet.manifest_file  = PUPPET_MANIFEST_FILE
-#    puppet.module_path    = PUPPET_MODULE_PATH
-#    puppet.facter = {
-#      "docker_user" => "vagrant"
-#    }
-#  end
-
-#  config.vm.synced_folder PUPPET_MODULE_PATH, "/puppet"
 
 end
