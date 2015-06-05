@@ -12,9 +12,13 @@ RAM = 8192
 Vagrant.configure(2) do |config|
 
   config.ssh.insert_key = false
-  config.vm.box = BOX
-  config.vm.network "private_network", ip: IP
-  config.vm.hostname = HOSTNAME
+
+  config.vm.define HOSTNAME do |host|
+    host.vm.box = BOX
+    host.vm.network "private_network", ip: IP
+    host.vm.hostname = HOSTNAME
+  end
+
   config.vm.provider "virtualbox" do |vb|
     unless File.exist?(SDB_FILE)
       vb.customize ["createhd", "--filename", SDB_FILE, "--size", SDB_SIZE]

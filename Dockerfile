@@ -28,7 +28,6 @@ RUN echo ' ' > /sbin/start_udev
 
 # Disable iptables
 RUN chkconfig --del iptables && rm -f /etc/init.d/iptables
-RUN chkconfig --del ip6tables && rm -f /etc/init.d/ip6tables
 
 # Enable services
 RUN chkconfig rsyslog on
