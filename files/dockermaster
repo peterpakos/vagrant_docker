@@ -57,9 +57,9 @@ run            Create and run containers
  -n <n>        Number of nodes (default: ${N})
  -h <hostname> Base hostname (default: ${HOSTNAME})
  -d <domain>   Domain (default: ${DOMAIN})
-stop [<node>]  Stop containers, all if empty list
-start [<node>] Start containers, all if empty list
-rm             Remove all containers
+stop [<node>]  Stop containers, all if none supplied
+start [<node>] Start containers, all if none supplied
+rm [<node>]    Remove containers, all if none supplied
 list           Print list of containers
 help           Print this help summary page
 version        Print version number
