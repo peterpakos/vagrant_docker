@@ -5,6 +5,7 @@ groupadd docker && usermod -aG docker vagrant
 cp -r /vagrant/files/.ssh ~vagrant/
 chown -R vagrant:vagrant ~vagrant/.ssh
 chmod 700 ~vagrant/.ssh && chmod 600 ~vagrant/.ssh/*
+ln -s /vagrant/files/dockermaster /usr/local/bin/dockermaster
 
 for i in rpcbind nfslock iptables ip6tables; do
   service $i stop; chkconfig $i off
@@ -25,3 +26,5 @@ cp /vagrant/files/docker-latest /usr/bin/docker
 chmod +x /usr/bin/docker
 
 chkconfig docker on && service docker start
+
+docker build -t peterpakos/centos /vagrant/

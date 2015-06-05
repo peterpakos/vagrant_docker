@@ -30,8 +30,8 @@ Vagrant.configure(2) do |config|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
-  config.vm.provision "shell", path: "files/configure-btrfs.sh"
-  config.vm.provision "shell", path: "files/bootstrap.sh"
+  config.vm.provision "shell", path: "files/configure-btrfs"
+  config.vm.provision "shell", path: "files/bootstrap"
 
 #  config.vm.provision "puppet" do |puppet|
 #    puppet.manifests_path = PUPPET_MANIFESTS_PATH

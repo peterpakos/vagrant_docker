@@ -1,3 +1,0 @@
-[submodule "dockermaster"]
-	path = dockermaster
-	url = https://github.com/peterpakos/dockermaster.git
