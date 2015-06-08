@@ -33,6 +33,15 @@ RUN chkconfig --del iptables && rm -f /etc/init.d/iptables
 RUN chkconfig rsyslog on
 RUN chkconfig sshd on
 
+# Java setup
+ADD files/set_java_home.sh /etc/profile.d/set_java_home.sh
+RUN update-alternatives --install /usr/bin/java java /usr/java/default/bin/java 1
+RUN update-alternatives --set java /usr/java/default/bin/java
+RUN update-alternatives --install /usr/bin/javac javac /usr/java/default/bin/javac 1
+RUN update-alternatives --set javac /usr/java/default/bin/javac
+RUN update-alternatives --install /usr/bin/jar jar /usr/java/default/bin/jar 1
+RUN update-alternatives --set jar /usr/java/default/bin/jar
+
 # Expose SSH
 EXPOSE 22
 

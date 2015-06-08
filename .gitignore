@@ -1,3 +1,4 @@
 .vagrant
 files/docker-latest
+files/jdk-*
 sdb.vdi

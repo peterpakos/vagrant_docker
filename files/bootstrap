@@ -19,6 +19,14 @@ yum -y update
 yum -y install http://epel.check-update.co.uk/6/i386/epel-release-6-8.noarch.rpm
 yum -y install htop bash-completion git vim
 
+# Java setup
+wget -N -nv --no-cookies -P /vagrant/files \
+  --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+  "http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz"
+mkdir -p /usr/java
+tar -C /usr/java --no-same-owner -zxvf /vagrant/files/jdk-7u79-linux-x64.tar.gz
+ln -s /usr/java/jdk1.7.0_79 /usr/java/default
+
 # Privoxy setup
 yum -y install privoxy
 sed -i 's/listen-address.*127.0.0.1:8118/listen-address :8118/' /etc/privoxy/config
