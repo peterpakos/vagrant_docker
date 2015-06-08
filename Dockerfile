@@ -2,7 +2,7 @@ FROM centos:6
 MAINTAINER Peter Pakos
 
 # Set timezone to BST
-RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+RUN ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
 # Update packages and install some additional ones
 RUN yum -y update

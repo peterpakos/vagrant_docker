@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Set timezone to BST
-rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+echo 'ZONE="Europe/London"' > /etc/sysconfig/clock
+ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
 # Set system limits
 cp /vagrant/files/90-nproc.conf /etc/security/limits.d/
