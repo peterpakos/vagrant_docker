@@ -1,6 +1,9 @@
 FROM centos:6
 MAINTAINER Peter Pakos
 
+# Set timezone to BST
+RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+
 # Update packages and install some additional ones
 RUN yum -y update
 RUN yum -y install http://www.mirrorservice.org/sites/dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
@@ -19,9 +22,6 @@ RUN sed -i 's/#AddressFamily any/AddressFamily inet/' /etc/ssh/sshd_config
 # Disable TTYs
 RUN sed -i 's/.*requiretty$/Defaults !requiretty/' /etc/sudoers
 RUN rm -f /etc/init/tty.conf /etc/init/start-ttys.conf
-
-# Set timezone to Europe/London
-RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
 
 # Disable udev
 RUN echo ' ' > /sbin/start_udev
