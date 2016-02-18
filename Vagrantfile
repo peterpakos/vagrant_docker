@@ -33,5 +33,4 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "files/configure-btrfs"
   config.vm.provision "shell", path: "files/bootstrap"
-
 end
