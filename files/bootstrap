@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # Set timezone to BST
 echo 'ZONE="Europe/London"' > /etc/sysconfig/clock
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
