@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 devices=(/dev/sda /dev/sdb)
 for testdev in "${devices[@]}"; do
